@@ -6,10 +6,7 @@
 #include "base.h" 
 #include "master.h" 
  
-
-
 void end_game(int* curr , int* typ) 
-
      /******************************************/ 
      /* function: redefines current number of  */ 
      /*           guesses to quit playing      */ 
@@ -23,9 +20,6 @@ void end_game(int* curr , int* typ)
   *typ = TRUE; 
 } 
 
-
-
-
 void prompt(char* s)
 
      /******************************************/ 
@@ -38,10 +32,6 @@ void prompt(char* s)
    printf("--> %s",s); 
 
 } 
-
-
-
-
 
 void format_output(char* s, int code) 
      /******************************************/ 
@@ -57,10 +47,6 @@ void format_output(char* s, int code)
 } 
 
 
-
-
-
-
 void skipline(int nb) 
      /******************************************/ 
      /* function: skips lines                  */ 
@@ -72,12 +58,6 @@ void skipline(int nb)
   int i = 0; 
   printf("\n"); 
 } 
-
-
-
-
-
-
 
 void set_dummy() 
      /********************************************/ 
@@ -94,12 +74,6 @@ void set_dummy()
       dummy[cur].pegs[x].color = guesses[cur].pegs[x].color; 
     } 
 } 
-
-
-
-
-
-
 
 void make_code(guess* ges) 
      /******************************************/ 
@@ -121,8 +95,6 @@ void make_code(guess* ges)
     }                     
 } 
 
-
-
  
 int find_digit(char col_name[7]) 
      /******************************************/ 
@@ -139,45 +111,12 @@ int find_digit(char col_name[7])
   int result;
   int s; 
   int max; 
-  int cr;
   max = 6; 
-  cr = BAD_COLOR;  /*  not a valid color */ 
-  
   for (s = 0; s < max; s++) 
-    {
+    {  /* result used for FullMCDC test*/
       result=(strlen(col_name) == strlen(col[dig[s]]) 
 	      &&  !(strncmp(col[dig[s]],col_name,strlen(col_name))));
-	  cr = s;
-      if (result) break;  /* Color found */ 
+      return(s); 
     }
-  return(cr); 
+  return(BAD_COLOR); /*  not a valid color */ 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

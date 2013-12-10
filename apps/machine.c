@@ -18,8 +18,7 @@ void machine_read_file()
   char * number; 
   int i; 
   last_hi_score = 0; 
-  hi_scores_file = fopen ("hi_score.lst", "r");
-  
+  hi_scores_file = fopen ("hi_score.lst", "r");  
   if (hi_scores_file == NULL) 
    { 
      /* no high score file*/ 
@@ -30,16 +29,14 @@ void machine_read_file()
    } 
   else 
     {  /* reads the high score file to fill the hi_scores_tab table */   
-      car = getc (hi_scores_file);  
- 
+      car = getc (hi_scores_file);   
       while (((car != EOF) && (last_hi_score < MAX_TAB))) /* reading the file */ 
 	{         
 	  max_string = MAX_STRING; 
 	  name = (char *) malloc (sizeof (char) * MAX_STRING); 
 	  firstname = (char *) malloc (sizeof (char) * MAX_STRING); 
 	  number = (char *) malloc (sizeof (char) * MAX_STRING); 
-	  i = 0;
- 	  
+	  i = 0; 	  
 	  while ((car != '\n') && (car != EOF)) 
 	  /* reading a name*/ 
 	    { 
@@ -49,7 +46,9 @@ void machine_read_file()
 		  max_string += MAX_STRING; 
 		  name = (char *) realloc (name, sizeof (char) * max_string); 
 		} 
-
+  	      if (islower(car)) 
+	      /*if lowercase then uppercase*/ 
+		car = toupper(car); 
 	      name [i] = car; 
 	      car = getc (hi_scores_file); 
 	      i++; 
@@ -68,7 +67,10 @@ void machine_read_file()
 		  max_string += MAX_STRING; 
 		  firstname = (char *) realloc (firstname, sizeof (char) * max_string); 
 		} 
- 
+
+	      if (islower(car)) 
+	      /*if lowercase then uppercase*/ 
+		car = toupper(car); 
 	      firstname [i] = car; 
 	      car = getc (hi_scores_file); 
 	      i++; 
@@ -79,7 +81,6 @@ void machine_read_file()
 	  car = getc (hi_scores_file); 
 	  max_string = MAX_STRING; 
 	  i = 0; 
-
 	  while ((car != '\n') && (car != EOF)) 
 	  /* reading a score */     
 	    { 
@@ -104,8 +105,6 @@ void machine_read_file()
       fclose (hi_scores_file); 
     } 
 } 
-
-
 
 void machine_update_scores (int score) 
 { 
@@ -214,11 +213,10 @@ void machine_print_score (int try)
   int i = 0; 
   machine_read_file(); 
   machine_update_scores(try); 
-
-  format_output("opening error, file: hi_score.lst\n",1); 
+  if (hi_scores_write() == 1) 
+    format_output("opening error, file: hi_score.lst\n",1); 
   skipline(2); 
 } 
-
 
 
 void score_mac()
@@ -226,7 +224,6 @@ void score_mac()
   int x, y; 
   for (x = 0; x < 4; x++)
     guesses[cur].pegs[x].used = code.pegs[x].used = NONE;
-
   for (x = 0; x < 4; x++) 
   /* searching black pegs */
     if (guesses[cur].pegs[x].color == code.pegs[x].color)
@@ -235,7 +232,6 @@ void score_mac()
 	code.pegs[x].used = guesses[cur].pegs[x].used = BLACK;
 	guesses[cur].blacks++;
       }
-
   if (guesses[cur].blacks != 4) 
   /* computer guess is partially correct */
     {
@@ -249,13 +245,10 @@ void score_mac()
 	      guesses[cur].whites++;
 	    }
     }
-
   else 
-    /* computer guess is correct */
+  /* computer guess is correct */
     game_won = TRUE;
-
 }
-
 
 void get_code_mac(guess* kode)
 {
@@ -266,16 +259,15 @@ void get_code_mac(guess* kode)
   
   code_valid = bad_in = FALSE;
   kode->blacks = kode->whites = 0;
-
   while (!code_valid) /* get a player code */
     {
       code_valid = TRUE;
       if (bad_in) /* Invalid player code */
 	format_output("Previous code contains invalid color.\n",1);
-
       format_output("Please enter the correct code -> ",1);
       scanf("%s %s %s %s",c[0],c[1],c[2],c[3]);
- 
+      while (getchar() != '\n');
+      skipline(1);  /* Bug Report #625: Wrong formatting */ 
       for (x = 0; x < 4; x++) /* checks player's code */
 	{
 	  kode->pegs[x].used = NONE;
@@ -308,16 +300,14 @@ void machine_plays()
   
   check = TRUE;
   format_output("Do you want me to double check you, y/n [default is y] -> ",1);
-
-
-  get_code_mac(&code);
+  if (check) 
+  /* get the player code before the search */
+    get_code_mac(&code);
   cur = 0;
   make_code(&guesses[cur]);
-
   set_dummy();
   /* check guess consistency */
-  check_consultancy(); 
-
+  check_consultancy();
   for (++cur; cur < MAX_TRY_MAC && !game_won && randomizing && !quit;)
     {
       x = 0;
@@ -339,7 +329,6 @@ void machine_plays()
 	randomizing = FALSE;
     }
 
-
   if (!game_won)
     for (cur; cur < MAX_TRY_MAC && !game_won && !quit; cur++)
       {
@@ -350,9 +339,8 @@ void machine_plays()
 	    set_dummy();
 	    check_consultancy();
 	  }
-
 	else 
-	  /* inconsistent guess, we quit the game */
+	/* inconsistent guess, we quit the game */
 	  {
 	    format_output("No guess is consistent.  You must have cheated!\n",1);
 				format_output("Can't recover from this.  Goodbye!\n",1);
@@ -372,8 +360,8 @@ void machine_plays()
 	format_output("guess.  Machines can get lucky, too!\n",0);
     }
   else 
-    format_output("I didn't break your code.  You win this time!\n",1);
+     /* the computer didn't break the code*/
+     if (!quit) 
+         format_output("I didn't break your code.  You win this time!\n",1);
   machine_print_score(cur);
 }
-
-

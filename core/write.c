@@ -43,41 +43,95 @@ void print_instructions_fr()
 
 int instruction()
 {
+    char inst;
     char lang;
     int ok = 0;
-
+    
+    format_output("Would you like instructions, y/n [default is n]-> ",0);
+    inst = waiting_loop();
+    if (inst != 'y' && inst != 'Y')
+    {
+      ok = 1;
+      return(ok);
+    }
     format_output("In which language,e(nglish)/f(rench)/i(talian)/g(erman)/b(elgian)/r(ussian) [default is e(nglish)]-> ",0);
     lang = waiting_loop();
     switch (lang)
-   {
+      {
       case 'r':
       case 'R':
-		format_output("Instructions in Russian ... to be completed",0);
-		break;
+	format_output("Are you sure? y/n [default is n]-> ",0);
+	inst = waiting_loop();
+	if (inst == 'n' || inst == 'N')
+	  return(0);
+	else
+	  {
+	    format_output("You really thought you could get russian  \n",0);
+	    ok = 1;
+	    return(ok);
+	  }	
       case 'i':
       case 'I':
-		format_output("Instructions in Italian ... to be completed",0);
-		break;
+	format_output("Are you sure? y/n [default is n]-> ",0);
+	inst = waiting_loop();
+	if (inst == 'n' || inst == 'N')
+	  return(0);
+	else
+	  {
+	    format_output("  I was joking   \n",0);
+	    ok = 1;
+	    return(ok);
+	  }
       case 'g':
       case 'G':
-		format_output("Instructions in German ... to be completed",0);
-		break;
+	format_output("Are you sure? y/n [default is n]-> ",0);
+	inst = waiting_loop();
+	if (inst == 'n' || inst == 'N')
+	  return(0);
+	else
+	  {
+	    format_output("  I don't understand  \n",0);
+	    ok = 1;
+	    return(ok);
+	  }
       case 'b':
       case 'B':
-		format_output("Instructions in Flamish ... to be completed",0);
-		break;
+	format_output("Are you sure? y/n [default is n]-> ",0);
+	inst = waiting_loop();
+	if (inst == 'n' || inst == 'N')
+	  return(0);
+	else
+	  {
+	    format_output(" Are you (w)alloon ou (f)lemish ?   \n",0);
+	    inst = waiting_loop();
+	    if (inst == 'f' || inst == 'F')
+	      {
+		format_output("Sorry, i never learnt flemish\n",0);
+		ok = 1;
+		return(ok);
+	      }
+	    else
+	      {
+		print_instructions_fr();
+		ok = 1;
+		return(ok);
+	      }
+	    print_instructions_fr();
+	    ok = 1;
+	    return(ok);
+	  }
       case 'f':
       case 'F':
-		print_instructions_fr();
-		break;
+	print_instructions_fr();
+	break;
       case 'e':
       case 'E':
-		print_instructions_gb();
-		break;
+	print_instructions_gb();
+	break;
       default:
-		print_instructions_gb();
-		break;
-	}
+	print_instructions_gb();
+	break;
+      }
     ok = 1;
     return(ok);
 }

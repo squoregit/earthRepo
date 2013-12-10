@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <results>
-<error file="apps/machine.c" line="50" id="memleakOnRealloc" severity="error" msg="Common realloc mistake: 'name' nulled but not freed upon failure"/>
-<error file="apps/machine.c" line="69" id="memleakOnRealloc" severity="error" msg="Common realloc mistake: 'firstname' nulled but not freed upon failure"/>
-<error file="apps/machine.c" line="90" id="memleakOnRealloc" severity="error" msg="Common realloc mistake: 'number' nulled but not freed upon failure"/>
-<error file="apps/machine.c" line="159" id="memleakOnRealloc" severity="error" msg="Common realloc mistake: 'name' nulled but not freed upon failure"/>
-<error file="apps/machine.c" line="182" id="memleakOnRealloc" severity="error" msg="Common realloc mistake: 'firstname' nulled but not freed upon failure"/>
+<error file="apps/machine.c" line="47" id="memleakOnRealloc" severity="error" msg="Common realloc mistake: 'name' nulled but not freed upon failure"/>
+<error file="apps/machine.c" line="68" id="memleakOnRealloc" severity="error" msg="Common realloc mistake: 'firstname' nulled but not freed upon failure"/>
+<error file="apps/machine.c" line="91" id="memleakOnRealloc" severity="error" msg="Common realloc mistake: 'number' nulled but not freed upon failure"/>
+<error file="apps/machine.c" line="158" id="memleakOnRealloc" severity="error" msg="Common realloc mistake: 'name' nulled but not freed upon failure"/>
+<error file="apps/machine.c" line="181" id="memleakOnRealloc" severity="error" msg="Common realloc mistake: 'firstname' nulled but not freed upon failure"/>
 <error file="apps/master.c" line="87" id="uninitvar" severity="error" msg="Uninitialized variable: inst"/>
 </results>
