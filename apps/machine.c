@@ -431,7 +431,8 @@ void machine_plays()
      /* the computer didn't break the code*/
      if (!quit) 
          format_output("I didn't break your code.  You win this time!\n",1);
-
+	else
+		format_output("Bye Bye ... You're too clever!\n",1);
   machine_print_score(cur);
 
 }

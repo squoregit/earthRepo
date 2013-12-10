@@ -10,7 +10,6 @@
 
 
 void hi_scores_disp(int i)
-
      /**********************************************/
      /* Function: Displays high score table        */
      /*                                            */
@@ -18,21 +17,24 @@ void hi_scores_disp(int i)
      /*      i: IN current index of the high score */
      /*             table                          */
      /**********************************************/
-
 {
-  
-  
+  if (i < last_hi_score) 
+  {
     /* print a score*/
     printf ("         | %10.10s ", hi_scores_tab [i].name);
     printf ("| %10.10s ", hi_scores_tab [i].firstname);
     printf ("|   %.2d  |\n", hi_scores_tab [i].score);
  
-  
+  }
 }
 
 
 int hi_scores_write ()
-     /* update the score file*/
+     /**********************************************/
+     /* Function: Update high score table          */
+     /*                                            */
+     /* Parameters:  None                          */
+     /**********************************************/
 {
 	int i,status;
   
@@ -62,23 +64,35 @@ void player_score (int score)
   char * firstname;
   char * number;
   int i,j;
-
   last_hi_score = 0;
+  /*open the high score file*/
+  hi_scores_file = fopen ("hi_score.lst", "r");
 
+  /* Processing o be completed */
 
-  /* Processing to be completed */
-
-     
+  format_output("         Sorry !!!!You are not in the top 10!!!!\n",0);
+ endupdate:
+  skipline(1);
+  format_output("                  SEE YOU LATER\n",0);      
 }
 
 void print_score_player (int try)
 {
   int i = 0;
-
+  skipline(2);  
+  format_output("---------------------------------------------------------------\n",0);
   player_score (try);
-  
+  if (hi_scores_write() == 1)
+    format_output("opening error, file: hi_score.lst\n",1);
+  skipline(2);
+  format_output("         -----------------------------------\n",0);
+  format_output("         |         HIGH SCORE TABLE        |\n",0);
+  format_output("         -----------------------------------\n",0);
+  format_output("         -----------------------------------\n",0);
+  format_output("         |    NAME    | FIRSTNAME  | SCORE |\n",0);
+  format_output("         -----------------------------------\n",0);
   hi_scores_disp (i);
- 
+  format_output("         -----------------------------------\n",0);
 }
 
 void send_score(int rxStruct)

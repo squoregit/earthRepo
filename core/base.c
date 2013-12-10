@@ -7,7 +7,6 @@
 #include "master.h" 
  
 void end_game(int* curr , int* typ) 
-
      /******************************************/ 
      /* function: redefines current number of  */ 
      /*           guesses to quit playing      */ 
@@ -15,23 +14,13 @@ void end_game(int* curr , int* typ)
      /* Parameters:                            */ 
      /*      curr: IN OUT current guess number */ 
      /*      typ: IN OUT var to quit the game  */ 
-     /******************************************/ 
- 
+     /******************************************/  
 { 
   *curr = MAX_TRY; 
   *typ = TRUE; 
 } 
 
-
-void prompt(char* s)
-
-     /******************************************/ 
-     /* function: prompt                       */ 
-     /*                                        */ 
-     /* Parameters:                            */ 
-     /*                                        */ 
-     /******************************************/  
-
+void prompt(char* s) 
 { 
     if (player) 
       printf("PLAYER--> %s",s); 
@@ -39,9 +28,7 @@ void prompt(char* s)
       printf("MACHINE--> %s",s); 
 } 
 
-
 void format_output(char* s, int code) 
-
      /******************************************/ 
      /* function: formats screen messages      */ 
      /*                                        */ 
@@ -54,16 +41,13 @@ void format_output(char* s, int code)
     printf("%s",s); 
 } 
 
-
 void skipline(int nb) 
-
      /******************************************/ 
      /* function: skips lines                  */ 
      /*                                        */ 
      /* Parameters:                            */ 
      /*      nb: IN number of lines to skip    */ 
-     /******************************************/
- 
+     /******************************************/ 
 { 
   int i = 0; 
   printf("\n"); 
@@ -71,14 +55,12 @@ void skipline(int nb)
 
 
 void set_dummy() 
-
      /********************************************/ 
      /* function: defines a dummy guess structure*/ 
      /*                                          */ 
      /* Parameters:                              */ 
      /*                                          */ 
      /********************************************/ 
-
 { 
   int x; 
   
@@ -92,16 +74,13 @@ void set_dummy()
 } 
 
 void make_code(guess* ges) 
-
      /******************************************/ 
      /* function: defines a random code        */ 
      /*                                        */ 
      /* Parameters:                            */ 
      /*      ges: IN OUT guess structure       */ 
      /******************************************/ 
-
 { 
-
   int x; 
   int random_value; 
   
@@ -112,13 +91,10 @@ void make_code(guess* ges)
       ges->pegs[x].color = random_value % 6; 
       ges->blacks = 0; 
       ges->whites = 0; 
-    } 
-                      
+    }                       
 } 
-
  
 int find_digit(char col_name[7]) 
-
      /******************************************/ 
      /* function: checks wether the color is   */ 
      /*            authorized                  */ 
@@ -129,13 +105,11 @@ int find_digit(char col_name[7])
      /* Return:                                */ 
      /*       s: color number                  */ 
      /******************************************/ 
-
 { 
   int result;
   int s; 
   int max; 
   max = 6; 
-
   for (s = 0; s < max; s++) 
     { 
       
@@ -148,7 +122,6 @@ int find_digit(char col_name[7])
 	return(s); 
     }
   return(BAD_COLOR); /*  not a valid color */ 
-
 }
 
 
