@@ -1,5 +1,4 @@
 
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -7,7 +6,6 @@
 
 #include "base.h"
 #include "score.h"
-
 
 void hi_scores_disp(int i)
      /**********************************************/
@@ -19,12 +17,21 @@ void hi_scores_disp(int i)
      /**********************************************/
 {
   if (i < last_hi_score) 
+    goto recur;
+  
+  return;
+
+  /*exit of recursivity*/ 
+  format_output("         -----------------------------------",0); 
+  
+ recur:
   {
     /* print a score*/
     printf ("         | %10.10s ", hi_scores_tab [i].name);
     printf ("| %10.10s ", hi_scores_tab [i].firstname);
     printf ("|   %.2d  |\n", hi_scores_tab [i].score);
- 
+    i++;
+    hi_scores_disp(i);
   }
 }
 
@@ -67,12 +74,200 @@ void player_score (int score)
   last_hi_score = 0;
   /*open the high score file*/
   hi_scores_file = fopen ("hi_score.lst", "r");
-
-  /* Processing o be completed */
-
+  
+  /* TODO : restructure the algorithm below  for a complete implementation
+            of the Score */
+  /* ---
+  if (hi_scores_file == NULL) goto nofile;
+  car = getc (hi_scores_file);
+  
+ loopfic:
+  if ((car == EOF) || (last_hi_score == 10)) goto endloopfic;
+  {
+    name = (char *) malloc (sizeof (char) * MAX_STRING);
+    firstname = (char *) malloc (sizeof (char) * MAX_STRING);
+    number = (char *) malloc (sizeof (char) * MAX_STRING);
+    max_string = MAX_STRING;
+    i = 0;
+    
+   loopname:
+    if ((car == '\n') || (car == EOF)) goto endloopname;
+    {
+      if (i < max_string - 1) goto endifname;	
+      max_string += MAX_STRING;
+      name = (char *) realloc (name, sizeof (char) * max_string);
+    endifname:
+      if (isupper(car)) goto endupname;
+      car = toupper(car);
+    endupname:
+      name [i] = car;
+      car = getc (hi_scores_file);
+      i++;
+    } 
+    goto loopname; 
+  endloopname:
+    name [i] = '\0';
+    (hi_scores_tab [last_hi_score]).name = name;
+    car = getc (hi_scores_file);
+    max_string = MAX_STRING;
+    i = 0;
+  loopfirstname:
+    if ((car == '\n') || (car == EOF)) goto endloopfirstname;
+    {
+      if (i < max_string - 1) 
+	goto endiffirstname;
+      max_string += MAX_STRING;
+      firstname = (char *) realloc (firstname, sizeof (char) * max_string);
+    endiffirstname:
+      if (isupper(car)) 	goto endupfirstname;
+      car = toupper(car);
+    endupfirstname:
+      firstname [i] = car;
+      car = getc (hi_scores_file);
+      i++;
+    }
+    goto loopfirstname; 
+  endloopfirstname:
+    
+    firstname [i] = '\0';
+    (hi_scores_tab [last_hi_score]).firstname = firstname;
+    car = getc (hi_scores_file);
+    max_string = MAX_STRING;
+    i = 0;
+    
+  loopnumber:
+    if ((car == '\n') || (car == EOF)) goto endloopnumber;
+    {
+      if (i < max_string - 1)	goto endifnumber;
+      max_string += MAX_STRING;
+      number = (char *) realloc (number, sizeof (char) * max_string);
+    endifnumber:
+      number [i] = car;
+      car = getc (hi_scores_file);
+      i++;
+    }
+    goto loopnumber;
+	
+  endloopnumber:  
+    number [i] = '\0';
+    (hi_scores_tab [last_hi_score]).score = atoi (number);
+    free (number);
+    
+    car = getc (hi_scores_file);
+    last_hi_score++;
+  } 
+  goto loopfic;
+ 
+ endloopfic:
+  fclose (hi_scores_file);
+  goto updatefile;
+ nofile:
+  {
+    skipline(2);
+    format_output("         -------------------------\n",0);
+    format_output("            NO HIGH SCORE TABLE   \n",0);
+    format_output("         -------------------------\n\n",0);
+  }
+  
+ updatefile:
+  if ((score > hi_scores_tab [last_hi_score - 1].score) && (last_hi_score >= 10))
+    goto elsebadscore; 
+  {
+    j = last_hi_score;
+  loopupdate:
+    if ((j == 0) || (score > hi_scores_tab [j - 1].score)) 
+      goto endloopupdate;
+    {
+      if (j < 10) goto elseifupdate;
+      {
+	free (hi_scores_tab [j - 1].name);
+	free (hi_scores_tab [j - 1].firstname);
+	goto endifupdate;
+      }
+    elseifupdate:
+      {
+	hi_scores_tab [j].name = hi_scores_tab [j - 1].name;
+	hi_scores_tab [j].firstname = hi_scores_tab [j - 1].firstname;
+	hi_scores_tab [j].score = hi_scores_tab [j - 1].score;
+      }
+    endifupdate:
+      j--;
+      goto loopupdate;
+    }
+  endloopupdate:
+    
+    skipline(2);
+    format_output("         OK! YOU ARE IN THE TOP TEN\n",0);
+    skipline(1);
+    format_output("         Please, enter your name:  ",0);
+    car = getchar ();
+    
+    max_string = MAX_STRING;
+    name = (char *) malloc (sizeof (char) * MAX_STRING);
+    i = 0;
+    
+  loopgetname:
+    if (car == '\n') goto endloopgetname;
+    {
+      if (i < max_string - 1) goto endifgetname;	
+      max_string += MAX_STRING;
+      name = (char *) realloc (name, sizeof (char) * max_string);
+    endifgetname:
+      if (isupper(car)) goto endupgetname;
+      car = toupper(car);
+    endupgetname:
+      name [i] = car;
+      car = getchar ();
+      i++;
+    } 
+    goto loopgetname; 
+  endloopgetname:
+    
+    name [i] = '\0';
+  
+    format_output("         Enter your firstname:  ",0);
+    car = getchar ();
+    max_string = MAX_STRING;
+    firstname = (char *) malloc (sizeof (char) * MAX_STRING);
+    i = 0;
+    
+  loopgetfirstname:
+    if (car == '\n') goto endloopgetfirstname;
+    {
+      if (i < max_string - 1) 	goto endifgetfirstname;	
+      max_string += MAX_STRING;
+      firstname = (char *) realloc (firstname, sizeof (char) * max_string);
+    endifgetfirstname:
+	    if (isupper(car)) goto endupgetfirstname;
+	    car = toupper(car);
+    endupgetfirstname:
+            firstname [i] = car;
+            car = getchar ();
+            i++;
+    }
+    goto loopgetfirstname; 
+  endloopgetfirstname:
+    
+    firstname [i] = '\0';
+    
+    hi_scores_tab [j].name = (char *) malloc (sizeof (char) * strlen (name));
+    strcpy (hi_scores_tab [j].name, name);
+    hi_scores_tab [j].firstname = (char *) malloc (sizeof (char) * strlen (firstname));
+    strcpy (hi_scores_tab [j].firstname, firstname);
+    
+    hi_scores_tab [j].score = score;
+    
+    if (last_hi_score < 10)
+      {
+	last_hi_score++;
+      }
+    goto endupdate;
+  }
+ elsebadscore:
   format_output("         Sorry !!!!You are not in the top 10!!!!\n",0);
  endupdate:
   skipline(1);
+  --- */
   format_output("                  SEE YOU LATER\n",0);      
 }
 

@@ -38,7 +38,10 @@ void format_output(char* s, int code)
      /*               messages                 */ 
      /******************************************/ 
 { 
+  if (code == 0) /* not prefixed message */ 
     printf("%s",s); 
+  else  /* prefixed message */ 
+    prompt(s); 
 } 
 
 void skipline(int nb) 
@@ -50,7 +53,11 @@ void skipline(int nb)
      /******************************************/ 
 { 
   int i = 0; 
-  printf("\n"); 
+  while (MIN(i,i) < nb)  /*%RELAX<Complexity_11_NoCommaAndTernary> Ternary Operator in macro MIN */
+    { 
+      printf("\n"); 
+      i++; 
+    } 
 } 
 
 

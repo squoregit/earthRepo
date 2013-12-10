@@ -8,7 +8,7 @@
 #include "write.h"
 #include "score.h"
 
-void score_player()
+void score_robot()
      /**************************************/
      /* Function: defines score for        */
      /*           current guess            */
@@ -53,7 +53,7 @@ void score_player()
 }
 
 
-void get_code_player(guess* kode)
+void get_code_robot(guess* kode)
      /**************************************/
      /* Function: accepts player guess     */
      /*                                    */
@@ -95,7 +95,7 @@ void get_code_player(guess* kode)
 }
 
 
-void help(int* tt)
+void help_robot(int* tt)
      /*******************************/
      /* Function: helps player      */
      /*                             */
@@ -145,7 +145,7 @@ void help(int* tt)
     skipline(1);
 }
 
-void play(guess choice[], int* curr, int guide)
+void play_robot(guess choice[], int* curr, int guide)
      /**********************************************/
      /* Function: gets a player guess,             */
      /*           checks it                        */
@@ -156,16 +156,16 @@ void play(guess choice[], int* curr, int guide)
      /*      guide: IN for checking guess validity */ 
      /**********************************************/
 {
-  get_code_player(&choice[*curr]);
+  get_code_robot(&choice[*curr]);
   set_dummy();
   if (guide && *curr)
     /*verify the validity of the guess*/
     consistent();
-  score_player();
+  score_robot();
   (*curr)++;
 }
 
-void player_plays()
+void robot_plays()
      /**************************************/
      /* Function: player looking for      */
      /*           computer's code          */
@@ -231,7 +231,7 @@ void player_plays()
 	case 'h':
 	case 'H':
 	  /* you need a hint to find the code*/
-	  help(&t);
+	  help_robot(&t);
 	  break;
 	case 'p':
 	case 'P':
@@ -241,7 +241,7 @@ void player_plays()
 	  break; 
 	default:
 	  /* you want to guess*/
-	  play(guesses,&cur,coach);
+	  play_robot(guesses,&cur,coach);
 	  break;
 	}
       
@@ -258,9 +258,9 @@ void player_plays()
 	  }
 	else
 	  {
-	    system("/usr/5bin/banner \" JACKPOT\"");
+	    system("/usr/bin/banner \" JACKPOT\"");
 	  }
-	print_score_player(good_try);
+	print_score_robot(good_try);
       }
     else if (!quit)
     {
