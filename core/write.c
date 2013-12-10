@@ -8,7 +8,8 @@
 int waiting_loop()
 {
   char inst;
-  if ((inst = getchar()) != '\n') ;
+  if ((inst = getchar()) != '\n')
+    while (getchar() != '\n');
   return(inst);
 }
 

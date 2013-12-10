@@ -29,6 +29,7 @@ void score_player()
 	printf("b");
       }
   
+  
   if (guesses[cur].blacks != 4)
     /* if not game_won, checks white pegs*/
     {
@@ -41,18 +42,31 @@ void score_player()
 	      guesses[cur].whites++;
 	      printf("w");
 	    }
-    }  
+    }
+  
   else
     game_won = TRUE;
   
   if (guesses[cur].blacks != 0 || guesses[cur].whites != 0)
     skipline(2);
+  
   else
     /*bad guess,no score */
     format_output("No score.\n\n",1);
 }
 
+
+
+
 void get_code_player(guess* kode)
+
+     /**************************************/
+     /* Function: accepts player guess     */
+     /*                                    */
+     /* Parameters:                        */
+     /*      kode: IN OUT guess structure  */
+     /**************************************/
+
 {
 
   char c[4][7];
@@ -69,10 +83,13 @@ void get_code_player(guess* kode)
 
       if (bad_in)
 	format_output("Previous code contains invalid color.\n",1);
+      
       format_output("Please enter guess",1);
       printf(" #%d -> ",cur + 1);
+      
       scanf("%s %s %s %s",c[0],c[1],c[2],c[3]);
       while (getchar() != '\n');
+
       /* loop to get 4 colors*/
       for (x = 0; x < 4; x++)
 	{
@@ -89,10 +106,22 @@ void get_code_player(guess* kode)
 }
 
 
+
+
 void help(int* tt)
+
+     /*******************************/
+     /* Function: helps player      */
+     /*                             */
+     /* Parameters:                 */
+     /*      tt: IN a guess         */
+     /*******************************/
+
 {
-    int z, w ;    
+    int z, w ;
+    
     skipline(1);
+
     z = 0;
     
     /* Enter the guess you need the hint for */
@@ -103,7 +132,10 @@ void help(int* tt)
 	while((*tt = getchar()) != '\n')
 	  z = z * 10 + *tt - '0';
       }
+    
+
     w = 0;
+
     /*choose the peg you need the hint for */
     while (w < 1 || w > 4)
       {
@@ -113,6 +145,7 @@ void help(int* tt)
 	while((*tt = getchar()) != '\n')
 	  w = w * 10 + *tt - '0';
       }
+    
     format_output("In guess",1);
     printf(" #%d,",z);
     printf("peg #%d received ",w);

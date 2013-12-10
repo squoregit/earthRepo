@@ -9,6 +9,7 @@
 #include "player.h" 
 #include "machine.h" 
  
+ 
 int JACKPOT;  
  
 char  *col[6] = { "white", 
@@ -25,39 +26,50 @@ guess  dummy[MAX_TRY];
 guess  code; 
 int    game_won, player, check, cons; 
  
-void rest() 
+ 
+ 
+void rest()
+ 
 { 
-   format_output("\n-- More --   ",0); 
+  while (getchar() != '\n') 
+    format_output("\n-- More --   ",0); 
 } 
 
 
+
 void setcolors() 
+     /****************************************/ 
+     /* Function: Initializes the code      */ 
+     /****************************************/ 
+
 {
+ 
   int x, val, y; 
   int digit_found, place_found; 
-  time_t t; 
+  time_t t;
+  
   time(&t);
   srand((unsigned int) t);
 
-   dig[0] = BAD_COLOR;
-   dig[1] = BAD_COLOR;
-   dig[2] = BAD_COLOR;
-   dig[3] = BAD_COLOR;
-   dig[4] = BAD_COLOR;
-   dig[5] = BAD_COLOR; 
+  for (x = 0; x < 6; x++) 
+    dig[x] = BAD_COLOR; 
   
   for (x = 6; x > 1; x--) 
     { 
       /* if you want a random value: val = rand() % x;*/ 
-      val = x - 1;     
+      val = x - 1; 
+      
       val = rand() %x;
       place_found = FALSE;
+       
       while (!place_found) 
 	{ 
 	  digit_found = FALSE; 
+
 	  for (y = 0; y < (6 - x); y++) 
 	    if (val == dig[y]) 
 	      digit_found = TRUE; 
+
 	  if (!digit_found) 
 	    { 
 	      dig[y] = val; 
@@ -71,17 +83,28 @@ void setcolors()
   dig[5] = 15 - dig[4] - dig[3] - dig[2] - dig[1] - dig[0]; 
 } 
 
+
+
 void main(int argc, char* argv[]) 
+
 { 
   char inst; 
-  int result; 
+  int result;
+
+  /* if a parameter is present, the machine code is displayed */ 
+  if (argc > 1) 
+    JACKPOT = 1; 
   
+  while (!instruction()); 
   /* to display game rules*/ 
   player = TRUE; 
   game_won = FALSE; 
   
   format_output("Do you want to guess, or make up the code,",0); 
   format_output(" g/m [default is g] -> ",0); 
+  
+  if ((inst = getchar()) != '\n') 
+    while (getchar() != '\n'); 
   
   /*result used for FullMCDC test */
   result =(inst == 'm' || inst == 'M');
@@ -99,3 +122,10 @@ void main(int argc, char* argv[])
   
   exit(0); 
 } 
+
+
+
+
+
+
+

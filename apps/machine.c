@@ -7,9 +7,12 @@
 #include "score.h" 
 #include "base.h" 
 #include "util.h"
- 
-void machine_read_file() 
 
+
+/*---------------------------------------*/ 
+void machine_read_file() 
+/*---------------------------------------*/
+ 
 { 
   char car; 
   int max_string; 
@@ -17,8 +20,11 @@ void machine_read_file()
   char * firstname; 
   char * number; 
   int i; 
+
   last_hi_score = 0; 
-  hi_scores_file = fopen ("hi_score.lst", "r");  
+ 
+  hi_scores_file = fopen ("hi_score.lst", "r"); 
+  
   if (hi_scores_file == NULL) 
    { 
      /* no high score file*/ 
@@ -27,37 +33,54 @@ void machine_read_file()
      format_output("   NO HIGH SCORE TABLE   \n",0); 
      format_output("*************************\n\n",0); 
    } 
+
   else 
-    {  /* reads the high score file to fill the hi_scores_tab table */   
-      car = getc (hi_scores_file);   
+
+    { 
+      
+      
+      /* reads the high score file to fill the hi_scores_tab table */ 
+      
+      car = getc (hi_scores_file); 
+      
+     
       while (((car != EOF) && (last_hi_score < MAX_TAB))) /* reading the file */ 
-	{         
+
+	{ 
+          
 	  max_string = MAX_STRING; 
 	  name = (char *) malloc (sizeof (char) * MAX_STRING); 
 	  firstname = (char *) malloc (sizeof (char) * MAX_STRING); 
 	  number = (char *) malloc (sizeof (char) * MAX_STRING); 
-	  i = 0; 	  
+	  i = 0; 
+	  
 	  while ((car != '\n') && (car != EOF)) 
 	  /* reading a name*/ 
 	    { 
+
 	      if (i >= max_string - 1) 
 	      /*if size of name is too long: reallocation */ 
   		{	 
 		  max_string += MAX_STRING; 
 		  name = (char *) realloc (name, sizeof (char) * max_string); 
 		} 
-  	      if (islower(car)) 
+ 
+ 	      if (islower(car)) 
 	      /*if lowercase then uppercase*/ 
 		car = toupper(car); 
 	      name [i] = car; 
 	      car = getc (hi_scores_file); 
 	      i++; 
 	    } 
+	  
 	  name [i] = '\0'; 
-	  (hi_scores_tab [last_hi_score]).name = name;       
+	  (hi_scores_tab [last_hi_score]).name = name; 
+	  
+           
 	  car = getc (hi_scores_file); 
 	  max_string = MAX_STRING; 
 	  i = 0; 
+
 	  while ((car != '\n') && (car != EOF)) 
 	  /* reading a firstname*/ 
 	    { 
@@ -77,12 +100,16 @@ void machine_read_file()
 	    }  
 	  
 	  firstname [i] = '\0'; 
-	  (hi_scores_tab [last_hi_score]).firstname = firstname;
+	  (hi_scores_tab [last_hi_score]).firstname = firstname; 
+	  
+          
 	  car = getc (hi_scores_file); 
 	  max_string = MAX_STRING; 
 	  i = 0; 
+	  
 	  while ((car != '\n') && (car != EOF)) 
-	  /* reading a score */     
+	  /* reading a score */ 
+	    
 	    { 
 	      if (i >= max_string - 1) 
 		{ 
@@ -93,10 +120,12 @@ void machine_read_file()
 	      number [i] = car; 
 	      car = getc (hi_scores_file); 
 	      i++; 
-	    } 	  
+	    } 
+	  
 	  number [i] = '\0'; 
 	  (hi_scores_tab [last_hi_score]).score = atoi (number); 
-	  free (number); 	  
+	  free (number); 
+	  
          car = getc (hi_scores_file); 
          last_hi_score++; 
 	} 
@@ -106,7 +135,11 @@ void machine_read_file()
     } 
 } 
 
+ 
+/*---------------------------------------*/ 
 void machine_update_scores (int score) 
+/*---------------------------------------*/ 
+
 { 
 
   char car; 
@@ -114,6 +147,7 @@ void machine_update_scores (int score)
   char * name; 
   char * firstname; 
   int i,j,result;
+
   /* result used for FullMCDC test */
   result= ((score <= hi_scores_tab [last_hi_score - 1].score) || 
 	   (last_hi_score < MAX_TAB));
@@ -164,9 +198,12 @@ void machine_update_scores (int score)
 	    car = getchar (); 
 	    i++; 
 	  }  
+	
 	name [i] = '\0'; 
+	
 	format_output("Please, enter your firstname\n",1); 
 	car = getchar (); 
+	
 	/* reading a firstname */ 
 	max_string = MAX_STRING; 
 	firstname = (char *) malloc (sizeof (char) * MAX_STRING); 
@@ -187,7 +224,9 @@ void machine_update_scores (int score)
 	    car = getchar (); 
 	    i++; 
 	  }  
+	
 	firstname [i] = '\0'; 
+	 
 	hi_scores_tab [j].name = (char *) malloc (sizeof (char) * strlen (name)); 
 	strcpy (hi_scores_tab [j].name, name); 
 	hi_scores_tab [j].firstname = (char *) malloc (sizeof (char) * strlen (firstname)); 
@@ -209,21 +248,32 @@ void machine_update_scores (int score)
 
 
 void machine_print_score (int try) 
+
 { 
+
   int i = 0; 
   machine_read_file(); 
   machine_update_scores(try); 
+
   if (hi_scores_write() == 1) 
     format_output("opening error, file: hi_score.lst\n",1); 
   skipline(2); 
+
 } 
 
 
 void score_mac()
 {
-  int x, y; 
+  /**************************************/
+  /* Function: defines score for        */
+  /*           current guess            */
+  /**************************************/ 
+  
+  int x, y;
+  
   for (x = 0; x < 4; x++)
     guesses[cur].pegs[x].used = code.pegs[x].used = NONE;
+  
   for (x = 0; x < 4; x++) 
   /* searching black pegs */
     if (guesses[cur].pegs[x].color == code.pegs[x].color)
@@ -232,6 +282,7 @@ void score_mac()
 	code.pegs[x].used = guesses[cur].pegs[x].used = BLACK;
 	guesses[cur].blacks++;
       }
+  
   if (guesses[cur].blacks != 4) 
   /* computer guess is partially correct */
     {
@@ -250,7 +301,15 @@ void score_mac()
     game_won = TRUE;
 }
 
+
+
 void get_code_mac(guess* kode)
+  /**************************************/
+  /* Function: accepts player's code    */
+  /*                                    */
+  /* Parameters:                        */
+  /*      kode: IN OUT guess structure  */
+  /**************************************/
 {
   extern int cur;
   char c[4][7];
@@ -291,6 +350,8 @@ void machine_plays()
   /* Function: computer looking for     */
   /*           player's code            */
   /**************************************/
+
+
   int t, u, v;
   int w, x, y, z;
   int randomizing = TRUE;
@@ -300,14 +361,20 @@ void machine_plays()
   
   check = TRUE;
   format_output("Do you want me to double check you, y/n [default is y] -> ",1);
+  
+
   if (check) 
   /* get the player code before the search */
     get_code_mac(&code);
   cur = 0;
+
   make_code(&guesses[cur]);
+
   set_dummy();
   /* check guess consistency */
   check_consultancy();
+  
+  
   for (++cur; cur < MAX_TRY_MAC && !game_won && randomizing && !quit;)
     {
       x = 0;
@@ -359,9 +426,34 @@ void machine_plays()
       /*the computer break the code in one guess */
 	format_output("guess.  Machines can get lucky, too!\n",0);
     }
+
   else 
      /* the computer didn't break the code*/
      if (!quit) 
          format_output("I didn't break your code.  You win this time!\n",1);
+
   machine_print_score(cur);
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
