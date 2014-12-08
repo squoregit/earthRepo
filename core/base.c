@@ -6,7 +6,10 @@
 #include "base.h" 
 #include "master.h" 
  
+
+
 void end_game(int* curr , int* typ) 
+
      /******************************************/ 
      /* function: redefines current number of  */ 
      /*           guesses to quit playing      */ 
@@ -20,13 +23,25 @@ void end_game(int* curr , int* typ)
   *typ = TRUE; 
 } 
 
-void prompt(char* s) 
-{ 
-    if (player) 
-      printf("PLAYER--> %s",s); 
-    else 
-      printf("MACHINE--> %s",s); 
+
+
+
+void prompt(char* s)
+
+     /******************************************/ 
+     /* function: prompt                       */ 
+     /*                                        */ 
+     /* Parameters:                            */ 
+     /*                                        */ 
+     /******************************************/  
+{  
+   printf("--> %s",s); 
+
 } 
+
+
+
+
 
 void format_output(char* s, int code) 
      /******************************************/ 
@@ -38,11 +53,13 @@ void format_output(char* s, int code)
      /*               messages                 */ 
      /******************************************/ 
 { 
-  if (code == 0) /* not prefixed message */ 
     printf("%s",s); 
-  else  /* prefixed message */ 
-    prompt(s); 
 } 
+
+
+
+
+
 
 void skipline(int nb) 
      /******************************************/ 
@@ -50,23 +67,21 @@ void skipline(int nb)
      /*                                        */ 
      /* Parameters:                            */ 
      /*      nb: IN number of lines to skip    */ 
-     /******************************************/ 
+     /******************************************/
 { 
   int i = 0; 
-  while (MIN(i,i) < nb)  /*%RELAX<Complexity_11_NoCommaAndTernary> Ternary Operator in macro MIN */
-    { 
-      printf("\n"); 
-      i++; 
-    } 
+  printf("\n"); 
 } 
+
+
+
+
+
 
 
 void set_dummy() 
      /********************************************/ 
      /* function: defines a dummy guess structure*/ 
-     /*                                          */ 
-     /* Parameters:                              */ 
-     /*                                          */ 
      /********************************************/ 
 { 
   int x; 
@@ -80,6 +95,12 @@ void set_dummy()
     } 
 } 
 
+
+
+
+
+
+
 void make_code(guess* ges) 
      /******************************************/ 
      /* function: defines a random code        */ 
@@ -90,7 +111,6 @@ void make_code(guess* ges)
 { 
   int x; 
   int random_value; 
-  
   for (x = 0; x < 4; x++) /* creates random code */ 
     {                       
       /* if you want a random value: random_value = rand();*/ 
@@ -98,8 +118,11 @@ void make_code(guess* ges)
       ges->pegs[x].color = random_value % 6; 
       ges->blacks = 0; 
       ges->whites = 0; 
-    }                       
+    }                     
 } 
+
+
+
  
 int find_digit(char col_name[7]) 
      /******************************************/ 
@@ -116,19 +139,45 @@ int find_digit(char col_name[7])
   int result;
   int s; 
   int max; 
+  int cr;
   max = 6; 
+  cr = BAD_COLOR;  /*  not a valid color */ 
+  
   for (s = 0; s < max; s++) 
-    { 
-      
-      /* result used for FullMCDC test*/
+    {
       result=(strlen(col_name) == strlen(col[dig[s]]) 
-	      &&  
-	      !(strncmp(col[dig[s]],col_name,strlen(col_name))));
-      
-      if (result)
-	return(s); 
+	      &&  !(strncmp(col[dig[s]],col_name,strlen(col_name))));
+	  cr = s;
+      if (result) break;  /* Color found */ 
     }
-  return(BAD_COLOR); /*  not a valid color */ 
+  return(cr); 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
